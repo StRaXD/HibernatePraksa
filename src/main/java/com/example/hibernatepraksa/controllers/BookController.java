@@ -37,4 +37,16 @@ public class BookController {
     public void postReview(@RequestBody Book book) {
         bookService.addBook(book);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteBook(@PathVariable int id){
+        bookService.deleteBook(id);
+    }
+
+    @PutMapping("/price/{id}/{price}")
+    public void changePrice(@PathVariable int id, @PathVariable int price){
+        bookService.updatePrice(id, price);
+    }
+
+
 }

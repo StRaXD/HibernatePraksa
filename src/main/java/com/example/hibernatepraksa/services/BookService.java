@@ -5,6 +5,7 @@ import com.example.hibernatepraksa.entity.HibernateUtil;
 import com.example.hibernatepraksa.entity.Review;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.annotations.Where;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Query;
@@ -17,12 +18,8 @@ public class BookService {
         Book tempInstructorDetail;
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // start a transaction
             transaction = session.beginTransaction();
-            tempInstructorDetail =
-                    session.get(Book.class, id);
-
-            // commit transaction
+            tempInstructorDetail = session.get(Book.class, id);
             session.getTransaction().commit();
 
         }
@@ -42,16 +39,16 @@ public class BookService {
     }
 
     public List<Book> getAll(){
-        List<Book> deptEmployees;
+        List<Book> books;
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             Query query = session.createQuery("from Book ");
-            deptEmployees = query.getResultList();
+            books = query.getResultList();
             session.getTransaction().commit();
 
         }
-        return deptEmployees;
+        return books;
     }
 
     public void addBook(Book book){
@@ -64,6 +61,44 @@ public class BookService {
 
             transaction.commit();
         }
+    }
+
+    public void deleteBook(int id){
+
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Book book = session.get(Book.class, id);
+            session.delete(book);
+            session.getTransaction().commit();
+
+        }
+
+    }
+    public void updatePrice(int id, int price){
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Book book = session.get(Book.class, id);
+            book.setPrice(price);
+            session.update(book);
+            session.getTransaction().commit();
+
+        }
+
+    }
+
+    public List<Book> sortBooks(){
+        List<Book> books;
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("select price from Book where Book.price");
+            books = query.getResultList();
+            session.getTransaction().commit();
+
+        }
+        return books;
     }
 
 }

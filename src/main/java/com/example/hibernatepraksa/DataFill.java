@@ -20,21 +20,32 @@ public class DataFill {
         Customer customer3 = new Customer("Igor", "Majstorovic", "igor@gmail.com");
         Customer customer4 = new Customer("Kristina", "Nenadic", "krisitna@gmail.com");
         Book book = new Book("Metro 2033", 750);
+        Book book1 = new Book("The Stranger", 550);
+        Book book2 = new Book("Bela Griva", 970);
+        Book book3 = new Book("Rat i Mir", 800);
+        Book book4 = new Book("Mali Princ", 250);
+        Book book5 = new Book("Pop Ćira i pop Spira", 170);
+
         BookStore store = new BookStore("Vulkan", "Beograd", "Terazije");
 
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // start a transaction
+
             transaction = session.beginTransaction();
-            // savethe student objects
+
             session.save(customer);
             session.save(customer1);
             session.save(customer2);
             session.save(customer3);
             session.save(customer4);
             session.save(book);
+            session.save(book1);
+            session.save(book2);
+            session.save(book3);
+            session.save(book4);
+            session.save(book5);
             session.save(store);
-            // commit transaction
+
             transaction.commit();
         }
     }
