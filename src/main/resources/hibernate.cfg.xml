@@ -29,5 +29,6 @@
         <mapping class="com.example.hibernatepraksa.entity.BookStore" />
         <mapping class="com.example.hibernatepraksa.entity.Book" />
         <mapping class="com.example.hibernatepraksa.entity.Review" />
+        <mapping class="com.example.hibernatepraksa.entity.User" />
     </session-factory>
 </hibernate-configuration>

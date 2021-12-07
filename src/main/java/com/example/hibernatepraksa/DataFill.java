@@ -23,7 +23,7 @@ public class DataFill {
         Book book3 = new Book("Rat i Mir", 800);
         Book book4 = new Book("Mali Princ", 250);
         Book book5 = new Book("Pop Ćira i pop Spira", 170);
-
+        User strax = new User("strax","password",true,"ROLE_USER");
 
         BookStore store = new BookStore("Vulkan", "Beograd", "Terazije");
 
@@ -31,7 +31,7 @@ public class DataFill {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
             transaction = session.beginTransaction();
-
+            session.save(strax);
             session.save(customer);
             session.save(customer1);
             session.save(customer2);

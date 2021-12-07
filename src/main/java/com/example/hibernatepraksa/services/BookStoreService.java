@@ -3,7 +3,6 @@ package com.example.hibernatepraksa.services;
 import com.example.hibernatepraksa.entity.Book;
 import com.example.hibernatepraksa.entity.BookStore;
 import com.example.hibernatepraksa.entity.HibernateUtil;
-import com.example.hibernatepraksa.entity.Review;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Service;

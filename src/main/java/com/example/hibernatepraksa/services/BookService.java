@@ -3,13 +3,11 @@ package com.example.hibernatepraksa.services;
 import com.example.hibernatepraksa.entity.Book;
 import com.example.hibernatepraksa.entity.HibernateUtil;
 import com.example.hibernatepraksa.entity.Review;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,15 +19,14 @@ public class BookService {
     private EntityManagerFactory emf;
 
     public Book getBook(int id){
-        Book tempInstructorDetail;
+        Book book;
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            tempInstructorDetail = session.get(Book.class, id);
+            book = session.get(Book.class, id);
             session.getTransaction().commit();
-
         }
-        return tempInstructorDetail;
+        return book;
     }
 
     public void postReview(int id, Review review){
@@ -60,17 +57,13 @@ public class BookService {
     public void addBook(Book book){
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-
             transaction = session.beginTransaction();
-
             session.save(book);
-
             transaction.commit();
         }
     }
 
     public void deleteBook(int id){
-
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -103,7 +96,6 @@ public class BookService {
             Query q = em.createNativeQuery("SELECT * FROM Book WHERE price>" + price);
             books = q.getResultList();
             session.getTransaction().commit();
-
         }
         return books;
     }
