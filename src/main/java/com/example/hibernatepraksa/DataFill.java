@@ -4,12 +4,16 @@ import com.example.hibernatepraksa.entity.*;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DataFill {
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @EventListener(ContextRefreshedEvent.class)
     public void contextRefreshedEvent() {
         Customer customer = new Customer("Strahinja", "Kovacevic", "strahinja@gmail.com");
@@ -23,7 +27,7 @@ public class DataFill {
         Book book3 = new Book("Rat i Mir", 800);
         Book book4 = new Book("Mali Princ", 250);
         Book book5 = new Book("Pop Ćira i pop Spira", 170);
-        User strax = new User("strax","password",true,"ROLE_USER");
+        User strax = new User("strax", passwordEncoder.encode("password"),true,"ROLE_USER");
 
         BookStore store = new BookStore("Vulkan", "Beograd", "Terazije");
 
