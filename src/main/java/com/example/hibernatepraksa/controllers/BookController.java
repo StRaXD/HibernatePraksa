@@ -2,9 +2,10 @@ package com.example.hibernatepraksa.controllers;
 
 import com.example.hibernatepraksa.entity.*;
 import com.example.hibernatepraksa.services.BookService;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -48,5 +49,8 @@ public class BookController {
         bookService.updatePrice(id, price);
     }
 
-
+    @GetMapping("/sort/greater/{price}")
+    public List<Book> sortBooks(@PathVariable int price){
+        return bookService.sortBooks(price);
+    }
 }

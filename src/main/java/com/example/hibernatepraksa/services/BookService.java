@@ -3,16 +3,22 @@ package com.example.hibernatepraksa.services;
 import com.example.hibernatepraksa.entity.Book;
 import com.example.hibernatepraksa.entity.HibernateUtil;
 import com.example.hibernatepraksa.entity.Review;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.annotations.Where;
-import org.springframework.stereotype.Service;
 
-import javax.persistence.Query;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.*;
 import java.util.List;
 
 @Service
 public class BookService {
+
+    @PersistenceUnit
+    private EntityManagerFactory emf;
 
     public Book getBook(int id){
         Book tempInstructorDetail;
@@ -43,7 +49,7 @@ public class BookService {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("from Book ");
+            Query query = session.createQuery("from Book b LEFT JOIN FETCH b.reviews rev" , Book.class);
             books = query.getResultList();
             session.getTransaction().commit();
 
@@ -88,17 +94,19 @@ public class BookService {
 
     }
 
-    public List<Book> sortBooks(){
+     public List<Book> sortBooks(int price){
         List<Book> books;
+        EntityManager em = emf.createEntityManager();
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("select price from Book where Book.price");
-            books = query.getResultList();
+            Query q = em.createNativeQuery("SELECT * FROM Book WHERE price>" + price);
+            books = q.getResultList();
             session.getTransaction().commit();
 
         }
         return books;
     }
+
 
 }

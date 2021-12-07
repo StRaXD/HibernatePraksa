@@ -15,7 +15,7 @@ public class Book {
     private int price;
 
 
-    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+    @OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name = "book_id")
     private List<Review> reviews;
 

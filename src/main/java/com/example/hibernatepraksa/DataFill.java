@@ -1,9 +1,7 @@
 package com.example.hibernatepraksa;
 
-import com.example.hibernatepraksa.entity.Book;
-import com.example.hibernatepraksa.entity.BookStore;
-import com.example.hibernatepraksa.entity.Customer;
-import com.example.hibernatepraksa.entity.HibernateUtil;
+import com.example.hibernatepraksa.entity.*;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -26,6 +24,7 @@ public class DataFill {
         Book book4 = new Book("Mali Princ", 250);
         Book book5 = new Book("Pop Ćira i pop Spira", 170);
 
+
         BookStore store = new BookStore("Vulkan", "Beograd", "Terazije");
 
         Transaction transaction = null;
@@ -45,6 +44,7 @@ public class DataFill {
             session.save(book4);
             session.save(book5);
             session.save(store);
+
 
             transaction.commit();
         }
