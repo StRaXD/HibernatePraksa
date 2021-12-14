@@ -24,11 +24,10 @@
         <property name="hibernate.dbcp.maxIdle">10</property>
         <property name="hibernate.dbcp.minIdle">5</property>
         <property name="hibernate.dbcp.maxWaitMillis">-1</property>
-        <mapping class="com.example.hibernatepraksa.entity.Customer" />
-        <mapping class="com.example.hibernatepraksa.entity.CustomerDetail" />
         <mapping class="com.example.hibernatepraksa.entity.BookStore" />
         <mapping class="com.example.hibernatepraksa.entity.Book" />
         <mapping class="com.example.hibernatepraksa.entity.Review" />
         <mapping class="com.example.hibernatepraksa.entity.User" />
+        <mapping class="com.example.hibernatepraksa.entity.Author" />
     </session-factory>
 </hibernate-configuration>

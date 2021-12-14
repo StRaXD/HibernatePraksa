@@ -1,5 +1,8 @@
 package com.example.hibernatepraksa.entity;
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +21,13 @@ public class Book {
     @OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name = "book_id")
     private List<Review> reviews;
+
+    @ManyToMany(fetch = FetchType.LAZY,cascade= {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinTable(
+            name = "book_authors",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id"))
+    private  Set<Author> authors;
 
     public Book() {
     }
@@ -58,6 +68,14 @@ public class Book {
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
     }
 
     @Override

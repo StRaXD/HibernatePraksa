@@ -1,8 +1,10 @@
 package com.example.hibernatepraksa.services;
 
+import com.example.hibernatepraksa.entity.Author;
 import com.example.hibernatepraksa.entity.Book;
 import com.example.hibernatepraksa.entity.HibernateUtil;
 import com.example.hibernatepraksa.entity.Review;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -10,6 +12,8 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,12 +22,14 @@ public class BookService {
     @PersistenceUnit
     private EntityManagerFactory emf;
 
+
+
     public Book getBook(int id){
         Book book;
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            book = session.get(Book.class, id);
+            book = (Book) session.createQuery("from Book b LEFT JOIN FETCH b.reviews rev LEFT JOIN FETCH b.authors auth where b.id=:bookid").setParameter("bookid" , id).uniqueResult();
             session.getTransaction().commit();
         }
         return book;
@@ -46,7 +52,7 @@ public class BookService {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("from Book b LEFT JOIN FETCH b.reviews rev" , Book.class);
+            Query query = session.createQuery("from Book b LEFT JOIN FETCH b.reviews rev LEFT JOIN FETCH b.authors auth" , Book.class);
             books = query.getResultList();
             session.getTransaction().commit();
 
@@ -87,14 +93,23 @@ public class BookService {
 
     }
 
-     public List<Book> sortBooks(int price){
+     public List<Book> sortBooksGreater(int price){
         List<Book> books;
-        EntityManager em = emf.createEntityManager();
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query q = em.createNativeQuery("SELECT * FROM Book WHERE price>" + price);
-            books = q.getResultList();
+            books = (List<Book>) session.createQuery("from Book b LEFT JOIN FETCH b.reviews rev LEFT JOIN FETCH b.authors auth where b.price>=:bookprice").setParameter("bookprice" , price).getResultList();
+            session.getTransaction().commit();
+        }
+        return books;
+    }
+
+    public List<Book> sortBooksLess(int price){
+        List<Book> books;
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            books = (List<Book>) session.createQuery("from Book b LEFT JOIN FETCH b.reviews rev LEFT JOIN FETCH b.authors auth where b.price<=:bookprice").setParameter("bookprice" , price).getResultList();
             session.getTransaction().commit();
         }
         return books;
